@@ -1,0 +1,162 @@
+{
+	"name": "PL_DbricksProcessing",
+	"properties": {
+		"activities": [
+			{
+				"name": "ingest_Customer",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/ProjectMain/DE/dataPipelineApp/ingestion/customer",
+					"baseParameters": {
+						"p_file_date": {
+							"value": "@formatDateTime(pipeline().parameters.p_processing_date, 'yyyy-MM-dd')",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_adevdbricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ingest_customerDriver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/ProjectMain/DE/dataPipelineApp/ingestion/customerDrivers",
+					"baseParameters": {
+						"p_file_date": {
+							"value": "@formatDateTime(pipeline().parameters.p_processing_date, 'yyyy-MM-dd')",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_adevdbricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ingest_loanTrx",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/ProjectMain/DE/dataPipelineApp/ingestion/loanTransaction",
+					"baseParameters": {
+						"p_file_date": {
+							"value": "@formatDateTime(pipeline().parameters.p_processing_date, 'yyyy-MM-dd')",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_adevdbricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "enrich_customer",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ingest_Customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "ingest_customerDriver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "ingest_loanTrx",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/ProjectMain/DE/dataPipelineApp/enrichment/customer"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_adevdbricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "enrich_loanTrx",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "enrich_customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/ProjectMain/DE/dataPipelineApp/enrichment/loanTrx"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_adevdbricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"p_processing_date": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "DE"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-06T02:26:35Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

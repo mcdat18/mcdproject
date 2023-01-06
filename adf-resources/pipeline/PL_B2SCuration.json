@@ -1,0 +1,101 @@
+{
+	"name": "PL_B2SCuration",
+	"properties": {
+		"activities": [
+			{
+				"name": "ac_RunB2SCuration",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/ProjectMain/EIZ/eiz_transform_notebook",
+					"baseParameters": {
+						"STORE_SALES_FOLDER": {
+							"value": "@pipeline().parameters.STORE_SALES_FOLDER",
+							"type": "Expression"
+						},
+						"ADLS_FOLDER": {
+							"value": "@pipeline().parameters.ADLS_FOLDER",
+							"type": "Expression"
+						},
+						"TABLE_LIST": {
+							"value": "@pipeline().parameters.TABLE_LIST",
+							"type": "Expression"
+						},
+						"CURRENCY_LIST": {
+							"value": "@pipeline().parameters.CURRENCY_LIST",
+							"type": "Expression"
+						},
+						"CURRENCY_FOLDER": {
+							"value": "@pipeline().parameters.CURRENCY_FOLDER",
+							"type": "Expression"
+						},
+						"GEOLOCATION_FOLDER": {
+							"value": "@pipeline().parameters.GEOLOCATION_FOLDER",
+							"type": "Expression"
+						},
+						"LOGS_FOLDER": {
+							"value": "@pipeline().parameters.LOGS_FOLDER",
+							"type": "Expression"
+						},
+						"ECOMM_FOLDER": {
+							"value": "@pipeline().parameters.ECOMM_FOLDER",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_adevdbricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"STORE_SALES_FOLDER": {
+				"type": "string",
+				"defaultValue": "sales"
+			},
+			"ADLS_FOLDER": {
+				"type": "string",
+				"defaultValue": "2022/10/30/15"
+			},
+			"TABLE_LIST": {
+				"type": "string",
+				"defaultValue": "products,store_customers,store_orders"
+			},
+			"CURRENCY_LIST": {
+				"type": "string",
+				"defaultValue": "CAD,EUR,INR"
+			},
+			"CURRENCY_FOLDER": {
+				"type": "string",
+				"defaultValue": "currency"
+			},
+			"GEOLOCATION_FOLDER": {
+				"type": "string",
+				"defaultValue": "geolocation"
+			},
+			"LOGS_FOLDER": {
+				"type": "string",
+				"defaultValue": "logs"
+			},
+			"ECOMM_FOLDER": {
+				"type": "string",
+				"defaultValue": "mcsalesns/mcsaleshub/*/*/*/*/*/*/*"
+			}
+		},
+		"folder": {
+			"name": "EIZ"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-06T01:52:40Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

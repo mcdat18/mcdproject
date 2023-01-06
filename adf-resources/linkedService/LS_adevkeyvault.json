@@ -1,0 +1,11 @@
+{
+	"name": "LS_adevkeyvault",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://a-dev-kvault.vault.azure.net/"
+		}
+	}
+}

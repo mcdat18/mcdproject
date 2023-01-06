@@ -1,0 +1,11 @@
+{
+	"name": "LS_mcdedevdlake",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://mcdedevdlake.dfs.core.windows.net/"
+		}
+	}
+}
